@@ -1,16 +1,78 @@
-# React + Vite
+# 🏕️ Cloud Nine Content - Interactive 3D Basecamp
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+An immersive, interactive 3D portfolio website built for a modern social media content agency. This project blends a **"Cozy-Tech"** aesthetic (low-poly retro visuals, pixel art filters) with **"San Fran Modern"** UI (clean typography, glassmorphism).
 
-Currently, two official plugins are available:
+The website functions as an interactive diorama where the 3D scene serves as the navigation menu.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+![Project Screenshot](https://i.imgur.com/YXMuuhA.png)
+<!-- Replace the link above with a screenshot of your actual site later -->
 
-## React Compiler
+## ✨ Features
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+*   **Interactive 3D Scene:** A procedural campfire basecamp featuring a custom-coded RV, logs, and vegetation.
+*   **Retro Aesthetic:** Custom post-processing pipeline including **God Rays**, **Outline Selection**, and a **Pixelation Filter** for a PS1-style look.
+*   **Procedural Assets:** Lightweight, code-generated 3D assets (`Camper.jsx`, `Log.jsx`, `Debris.jsx`) that load instantly.
+*   **Interactive Guide:** Animated 3D character (`.glb`) that serves as the scene anchor.
+*   **Glassmorphism UI:** A clean, frosted-glass overlay system for displaying agency content without leaving the immersion.
+*   **Performance Optimized:** Built with React Three Fiber and Vite for fast loading and smooth 60fps rendering.
 
-## Expanding the ESLint configuration
+## 🛠️ Tech Stack
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+*   **Framework:** [React](https://reactjs.org/) + [Vite](https://vitejs.dev/)
+*   **3D Engine:** [Three.js](https://threejs.org/)
+*   **React Bindings:** [React Three Fiber (R3F)](https://docs.pmnd.rs/react-three-fiber)
+*   **Helpers:** [@react-three/drei](https://github.com/pmndrs/drei)
+*   **Effects:** [@react-three/postprocessing](https://github.com/pmndrs/react-postprocessing)
+
+## 🚀 Getting Started
+
+### 1. Clone the Repository
+```bash
+git clone https://github.com/yourusername/agency-portfolio-3d.git
+cd agency-portfolio-3d
+```
+
+### 2. Install Dependencies
+```bash
+npm install
+```
+
+### 3. Run Local Server
+```bash
+npm run dev
+```
+Open `http://localhost:5173` to view the project.
+
+## 📂 Project Structure
+
+*   **`src/App.jsx`**: The main scene controller. Handles Lighting (Moon/Fire), Atmosphere (Fog), and Post-Processing Effects.
+*   **`src/Basecamp.jsx`**: The interactive layer. Contains the clickable items (Guide, Compass, Backpack, Radio).
+*   **`src/data.js`**: **EDIT THIS FILE** to change the text content (About Us, Services, Strategy, Contact).
+*   **`src/Overlay.jsx`**: The 2D glass UI modal component.
+*   **`src/Camper.jsx` / `Log.jsx` / `Debris.jsx`**: Custom procedural 3D models.
+*   **`public/`**: Stores static assets like the `Guide.glb` character file.
+
+## 🎨 Customization Guide
+
+### Changing Content (Text)
+To update the Agency Name, Services list, or "About Us" story, simply edit **`src/data.js`**.
+*   *You do not need to touch the 3D code to change text.*
+
+### Adjusting the Atmosphere
+Go to **`src/App.jsx`** to tweak the visuals:
+*   **Fog:** Adjust `fog color` or `near/far` distance args.
+*   **God Rays:** Modify `exposure`, `density`, and `weight` inside the `<GodRays>` component.
+*   **Moonlight:** Adjust the intensity of the `<SpotLight>`.
+
+### Adding New Assets
+1.  Place `.glb` files in the `public/` folder.
+2.  Update `src/Basecamp.jsx` to include a new `<Prop />` referencing that file.
+3.  Or, build new procedural components like `Camper.jsx` using Three.js primitives.
+
+## 📝 License
+
+This project is open source and available under the [MIT License](LICENSE).
+
+---
+
+*Built with 💻 code and 🔥 campfire vibes.*
