@@ -1,12 +1,35 @@
-* {
-  box-sizing: border-box;
-}
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap');
 
-html, body, #root {
+body, html, #root {
   width: 100%;
   height: 100%;
   margin: 0;
   padding: 0;
-  overflow: hidden; /* Prevents scrollbars */
-  background-color: #101020;
+  overflow: hidden;
+  background-color: #2a2438;
+  font-family: 'Inter', sans-serif;
+}
+
+/* The "Glassmorphism" Label */
+.glass-label {
+  background: rgba(20, 20, 30, 0.6); /* Dark semi-transparent */
+  backdrop-filter: blur(12px);       /* The Blur Effect */
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: rgba(255, 255, 255, 0.9);
+  padding: 8px 16px;
+  border-radius: 30px; /* Pill shape */
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+  pointer-events: none; /* Let clicks pass through to the 3D object */
+  box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+  white-space: nowrap;
+  transition: all 0.3s ease;
+}
+
+/* Helper class if you want to modify it */
+.glass-label:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.3);
 }
