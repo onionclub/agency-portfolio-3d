@@ -97,7 +97,7 @@ export default function App() {
               density={0.96}  
               decay={0.94}    
               weight={0.15}   
-              exposure={0.1}  
+              exposure={0.25}  
               clampMax={1}
               kernelSize={KernelSize.SMALL}
               blur={true}
