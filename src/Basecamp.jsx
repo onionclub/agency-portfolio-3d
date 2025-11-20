@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import { useGLTF, useAnimations, Html } from '@react-three/drei'
-import * as THREE from 'three' // <--- Make sure to add this!
+import { Select } from '@react-three/postprocessing' // <--- Import this!
 
-// ... (Keep your Guide component exactly as it is) ...
-function Guide({ file, position, rotation, label, onClick }) {
+// --- 1. THE GUIDE (With Outline Logic) ---
+function Guide({ file, position, rotation, label, onClick, showLabel }) {
   const { scene, animations } = useGLTF(`/${file}`)
   const { actions, names } = useAnimations(animations, scene)
   const [hovered, setHovered] = useState(false)
@@ -25,92 +25,156 @@ function Guide({ file, position, rotation, label, onClick }) {
       onPointerOut={() => { document.body.style.cursor = 'auto'; setHovered(false) }}
       onClick={onClick}
     >
-      <primitive object={scene} scale={1.5} position={[0, 0, 0]} />
-      <Html position={[0, 2.2, 0]} center>
-        <div className="glass-label">{label}</div>
-      </Html>
+      {/* WRAP THE PRIMITIVE IN <Select> */}
+      <Select enabled={hovered}>
+        <primitive object={scene} scale={1.5} position={[0, 0, 0]} />
+      </Select>
+      
+      {showLabel && (
+        <Html position={[0, 2.2, 0]} center>
+          <div className="glass-label">{label}</div>
+        </Html>
+      )}
     </group>
   )
 }
 
-// --- THE DEBUG PROP ---
-function Prop({ file, position, rotation, scale = 1, label, onClick }) {
-  const { scene } = useGLTF(`/${file}`)
+// --- 2. THE PROPS (Backpack, Compass, Radio) ---
+
+function Backpack({ position, rotation, onClick, showLabel }) {
   const [hovered, setHovered] = useState(false)
-
-  // FORCE OVERRIDE: Make it Pink and Visible
-  useEffect(() => {
-    scene.traverse((child) => {
-      if (child.isMesh) {
-        // Paint it bright pink so we can't miss it
-        child.material = new THREE.MeshBasicMaterial({ color: 'hotpink', wireframe: true })
-      }
-    })
-  }, [scene])
-
   return (
     <group 
       position={position} 
-      rotation={rotation}
+      rotation={rotation} 
+      scale={hovered ? 1.2 : 1}
+      onClick={onClick}
       onPointerOver={() => { document.body.style.cursor = 'pointer'; setHovered(true) }}
       onPointerOut={() => { document.body.style.cursor = 'auto'; setHovered(false) }}
-      onClick={onClick}
     >
-      {/* EXPERIMENTAL SCALE: Multiply by 50 just to check if it was microscopic */}
-      <primitive 
-        object={scene} 
-        scale={hovered ? (scale * 50) * 1.2 : (scale * 50)} 
-      />
+      {/* Optional: Add <Select enabled={hovered}> here too if you want props outlined! */}
+      <mesh position={[0, 0.5, 0]}>
+        <boxGeometry args={[0.8, 1, 0.5]} />
+        <meshStandardMaterial color="#8B4513" />
+      </mesh>
+      <mesh position={[0, 0.3, 0.3]}>
+        <boxGeometry args={[0.5, 0.4, 0.2]} />
+        <meshStandardMaterial color="#A0522D" />
+      </mesh>
+      <mesh position={[0, 0.9, 0]}>
+        <cylinderGeometry args={[0.4, 0.4, 0.5, 3]} rotation={[0,0,1.57]} />
+        <meshStandardMaterial color="#654321" />
+      </mesh>
       
-      <Html position={[0, 1.5, 0]} center>
-        <div className="glass-label">{label}</div>
-      </Html>
+      {showLabel && (
+        <Html position={[0, 1.5, 0]} center>
+          <div className="glass-label">The Kit (Services)</div>
+        </Html>
+      )}
     </group>
   )
 }
 
-export default function Basecamp() {
+function Compass({ position, rotation, onClick, showLabel }) {
+  const [hovered, setHovered] = useState(false)
+  return (
+    <group 
+      position={position} 
+      rotation={rotation} 
+      scale={hovered ? 1.2 : 1}
+      onClick={onClick}
+      onPointerOver={() => { document.body.style.cursor = 'pointer'; setHovered(true) }}
+      onPointerOut={() => { document.body.style.cursor = 'auto'; setHovered(false) }}
+    >
+      <mesh position={[0, 0.1, 0]}>
+        <cylinderGeometry args={[0.4, 0.4, 0.1, 32]} />
+        <meshStandardMaterial color="#DAA520" metalness={0.8} roughness={0.2} />
+      </mesh>
+      <mesh position={[0, 0.16, 0]}>
+        <cylinderGeometry args={[0.35, 0.35, 0.05, 32]} />
+        <meshStandardMaterial color="white" />
+      </mesh>
+      <mesh position={[0, 0.2, 0]} rotation={[0, 0.5, 0]}>
+        <boxGeometry args={[0.1, 0.02, 0.4]} />
+        <meshStandardMaterial color="red" />
+      </mesh>
+
+      {showLabel && (
+        <Html position={[0, 1, 0]} center>
+          <div className="glass-label">The Route (Strategy)</div>
+        </Html>
+      )}
+    </group>
+  )
+}
+
+function Radio({ position, rotation, onClick, showLabel }) {
+  const [hovered, setHovered] = useState(false)
+  return (
+    <group 
+      position={position} 
+      rotation={rotation} 
+      scale={hovered ? 1.2 : 1}
+      onClick={onClick}
+      onPointerOver={() => { document.body.style.cursor = 'pointer'; setHovered(true) }}
+      onPointerOut={() => { document.body.style.cursor = 'auto'; setHovered(false) }}
+    >
+      <mesh position={[0, 0.4, 0]}>
+        <boxGeometry args={[0.8, 0.5, 0.3]} />
+        <meshStandardMaterial color="#CC3333" />
+      </mesh>
+      <mesh position={[0.2, 0.4, 0.16]}>
+        <circleGeometry args={[0.15, 32]} />
+        <meshStandardMaterial color="#222" />
+      </mesh>
+      <mesh position={[-0.3, 0.8, -0.1]}>
+        <cylinderGeometry args={[0.02, 0.02, 0.8, 8]} />
+        <meshStandardMaterial color="silver" />
+      </mesh>
+
+      {showLabel && (
+        <Html position={[0, 1.2, 0]} center>
+          <div className="glass-label">Signal (Contact)</div>
+        </Html>
+      )}
+    </group>
+  )
+}
+
+// --- MAIN COMPONENT ---
+export default function Basecamp({ onSectionSelect, isModalOpen }) {
+  const showLabels = !isModalOpen 
+
   return (
     <group>
-      {/* Guide */}
       <Guide 
         file="Guide.glb" 
         position={[-2, 0, -1]} 
         rotation={[0, 1.5, 0]} 
         label="The Guide"
-        onClick={() => alert("About Us")}
+        onClick={() => onSectionSelect('guide')}
+        showLabel={showLabels}
       />
 
-      {/* PROPS - Note: I am passing scale={1} but the component multiplies it by 50 */}
-      
-      {/* Compass */}
-      <Prop 
-        file="Compass.glb"   
-        position={[2, 0.5, 0]} 
-        rotation={[0, 0, 0]} 
-        scale={1} 
-        label="Strategy"
-        onClick={() => alert("Strategy")}
-      />
-
-      {/* Backpack */}
-      <Prop 
-        file="Backpack.glb" 
+      <Backpack 
         position={[-1.5, 0, 2]} 
-        rotation={[0, 2, 0]} 
-        scale={1}
-        label="Services"
-        onClick={() => alert("Services")}
+        rotation={[0, 0.5, 0]} 
+        onClick={() => onSectionSelect('services')}
+        showLabel={showLabels}
       />
 
-      {/* Radio */}
-      <Prop 
-        file="Radio.glb" 
+      <Compass 
+        position={[2, 0, 0]} 
+        rotation={[0, 0, 0]} 
+        onClick={() => onSectionSelect('strategy')}
+        showLabel={showLabels}
+      />
+
+      <Radio 
         position={[1, 0, 2.5]} 
         rotation={[0, -0.5, 0]} 
-        scale={1}
-        label="Contact"
-        onClick={() => alert("Contact")}
+        onClick={() => onSectionSelect('contact')}
+        showLabel={showLabels}
       />
     </group>
   )
