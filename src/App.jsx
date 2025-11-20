@@ -9,6 +9,7 @@ import Basecamp from './Basecamp'
 import Overlay from './Overlay'
 import Camper from './Camper'
 import Debris from './Debris'
+import Log from './Log' // <--- IMPORT THE LOG
 import { contentData } from './data'
 
 export default function App() {
@@ -45,7 +46,7 @@ export default function App() {
           <meshStandardMaterial color="#080810" />
         </mesh>
 
-        {/* DIRT PATCH: Increased size to 9 so it holds everything comfortably */}
+        {/* DIRT PATCH */}
         <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, 0.01, 0]} receiveShadow>
           <circleGeometry args={[9, 32]} />
           <meshStandardMaterial color="#3b2d24" roughness={1} /> 
@@ -55,15 +56,21 @@ export default function App() {
           <Selection>
             <Campfire position={[0, 0, 0]} />
             <Forest />
-            
-            {/* DEBRIS: Now includes Chunky Grass */}
             <Debris /> 
             
-            {/* CAMPER: Scaled UP and moved FURTHER BACK */}
+            {/* CAMPER */}
             <Camper 
-              position={[-12, 0, -8]} 
-              rotation={[0, 1.2, 0]} 
-              scale={1.5} // Bigger
+              position={[-8, 0, -5]} 
+              rotation={[0, 1.0, 0]} 
+              scale={0.8} 
+            />
+
+            {/* NEW LOG SEATING */}
+            {/* Placed to the right, angled towards the fire */}
+            <Log 
+              position={[-0.5, 0, -3.2]} 
+              rotation={[0.2, 0.15, 0.03]} 
+              scale={1.5}
             />
             
             <Basecamp 
