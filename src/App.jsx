@@ -39,30 +39,31 @@ export default function App() {
 
         {/* --- 4. SCENE CONTENT --- */}
         
-        {/* Main Ground (Darkest) */}
+        {/* Main Ground */}
         <mesh rotation={[-Math.PI / 2, 0, 0]} receiveShadow>
           <circleGeometry args={[50, 32]} />
           <meshStandardMaterial color="#080810" />
         </mesh>
 
-        {/* DIRT PATCH (Fixed: Much Darker to blend) */}
+        {/* DIRT PATCH: Increased size to 9 so it holds everything comfortably */}
         <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, 0.01, 0]} receiveShadow>
           <circleGeometry args={[9, 32]} />
-          {/* Dark Charcoal/Brown to blend into the night */}
-          <meshStandardMaterial color="#1c1512" roughness={1} /> 
+          <meshStandardMaterial color="#3b2d24" roughness={1} /> 
         </mesh>
 
         <Suspense fallback={null}>
           <Selection>
             <Campfire position={[0, 0, 0]} />
             <Forest />
+            
+            {/* DEBRIS: Now includes Chunky Grass */}
             <Debris /> 
             
-            {/* CAMPER FIX: Massive Scale (3.5) & Adjusted Position */}
+            {/* CAMPER: Scaled UP and moved FURTHER BACK */}
             <Camper 
-              position={[-15, 0, -10]} 
-              rotation={[0, 0.6, 0]} // Angled to look at the fire
-              scale={3.5} 
+              position={[-12, 0, -8]} 
+              rotation={[0, 1.2, 0]} 
+              scale={1.5} // Bigger
             />
             
             <Basecamp 
