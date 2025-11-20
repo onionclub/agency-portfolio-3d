@@ -1,6 +1,6 @@
 import React, { Suspense, useState, useRef } from 'react'
 import { Canvas } from '@react-three/fiber'
-import { OrbitControls, Loader, SpotLight } from '@react-three/drei'
+import { OrbitControls, Loader } from '@react-three/drei' // Removed SpotLight from imports
 import { EffectComposer, Pixelation, Outline, Selection, GodRays } from '@react-three/postprocessing'
 import { BlendFunction, Resizer, KernelSize } from 'postprocessing'
 import Campfire from './Campfire'
@@ -22,44 +22,33 @@ export default function App() {
       <Canvas shadows camera={{ position: [8, 5, 8] }}>
         
         {/* --- 1. ATMOSPHERE --- */}
-        <color attach="background" args={['#101020']} />
+        <color attach="background" args={['#121220']} />
         
-        {/* FIXED FOG: Pushed back (starts at 10, ends at 45) so it doesn't eat the trees */}
-        <fog attach="fog" args={['#101020', 10, 45]} />
+        {/* FOG: Your preferred settings (Starts closer at 5, ends at 30) */}
+        <fog attach="fog" args={['#121220', 5, 30]} />
         
-        {/* Brighter Ambient so the ground isn't pitch black */}
-        <ambientLight intensity={0.7} color="#cce0ff" />
+        {/* AMBIENT: High intensity (1.0) to keep items visible without the spotlight */}
+        <ambientLight intensity={1.0} color="#cce0ff" />
 
 
         {/* --- 2. LIGHTING --- */}
         
+        {/* Fire Light (Warm) */}
         <pointLight position={[5, 10, 5]} intensity={1.5} color="#ffaaee" castShadow />
 
-        {/* MOON SPOTLIGHT: Higher and Further to match the new Moon position */}
-        <SpotLight
-          position={[-25, 25, -25]} 
-          target-position={[0, 0, 0]}
-          color="#b9d5ff"   
-          intensity={8}     // Bumped intensity
-          distance={80}     
-          angle={0.5}         
-          attenuation={20}  
-          anglePower={5}    
-          penumbra={1}      
-          castShadow
-        />
+        {/* (SpotLight Removed per instructions) */}
+
 
         {/* --- 3. VISUAL MOON (God Ray Source) --- */}
-        {/* Moved Higher and Further Back for steeper rays */}
-        <mesh ref={moonRef} position={[-25, 20, -25]}>
-          <sphereGeometry args={[4, 32, 32]} /> {/* Made moon slightly larger */}
-          <meshBasicMaterial color="#eef4ff" transparent opacity={1} />
+        <mesh ref={moonRef} position={[-20, 18, -20]}>
+          <sphereGeometry args={[3, 32, 32]} />
+          <meshBasicMaterial color="#ffffff" transparent opacity={1} />
         </mesh>
 
         {/* --- 4. SCENE CONTENT --- */}
         <mesh rotation={[-Math.PI / 2, 0, 0]} receiveShadow>
           <circleGeometry args={[50, 32]} />
-          <meshStandardMaterial color="#101018" />
+          <meshStandardMaterial color="#080810" />
         </mesh>
 
         <Suspense fallback={null}>
@@ -82,16 +71,16 @@ export default function App() {
             <Outline visibleEdgeColor="white" hiddenEdgeColor="white" blur edgeStrength={10} />
           </Selection>
 
-          {/* BUMPED UP GOD RAYS */}
+          {/* GOD RAYS: Your specific tuned settings */}
           {moonRef.current && (
             <GodRays
               sun={moonRef.current}
               blendFunction={BlendFunction.SCREEN}
               samples={35}    
-              density={0.96}  // Still thick, but fog isn't hiding trees now
-              decay={0.93}    // Rays travel further
-              weight={0.8}    // Increased weight
-              exposure={0.8}  // Increased brightness (The "Bump")
+              density={0.96}  
+              decay={0.94}    
+              weight={0.15}   // User defined
+              exposure={0.22}  // User defined
               clampMax={1}
               kernelSize={KernelSize.SMALL}
               blur={true}
